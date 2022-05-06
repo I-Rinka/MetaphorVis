@@ -8,7 +8,7 @@ const props = defineProps({
 const emits = defineEmits(["clickCard"]);
 
 function ClickCard() {
-  emits("clickCard", props.content.innerContent);
+  emits("clickCard", props.content);
 }
 </script>
 

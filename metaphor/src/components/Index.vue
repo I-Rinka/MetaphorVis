@@ -3,10 +3,13 @@ import { computed, reactive, ref, toRaw } from "vue";
 import { Content } from "../data/content";
 import { Search, Aim } from "@element-plus/icons-vue";
 import CardView from "./Card.vue";
+import DetailView from "./DetailView.vue";
 
 const data = reactive({
   content: [],
   filters: ["", "", ""],
+  show_detail: false,
+  current_content: null,
 });
 
 for (let i = 0; i < 10; i++) {
@@ -66,8 +69,13 @@ const show_cards = computed(() => {
   }
 });
 
-function Show(filter_index, condition) {
+function Filter(filter_index, condition) {
   data.filters[filter_index] = condition;
+}
+
+function ShowDetailWindow(content) {
+  data.show_detail = true;
+  data.current_content = content;
 }
 </script>
 
@@ -81,7 +89,7 @@ function Show(filter_index, condition) {
           <el-button
             color="rgb(72, 124, 198)"
             type="primary"
-            @click="Show(0, '')"
+            @click="Filter(0, '')"
           >
             <el-icon color="white"><aim /></el-icon>
           </el-button>
@@ -89,7 +97,7 @@ function Show(filter_index, condition) {
           <el-button
             color="rgb(72, 124, 198)"
             type="primary"
-            @click="Show(0, 'test1')"
+            @click="Filter(0, 'test1')"
           >
             <el-icon color="white"><aim /></el-icon>
           </el-button>
@@ -97,7 +105,7 @@ function Show(filter_index, condition) {
           <el-button
             color="rgb(72, 124, 198)"
             type="primary"
-            @click="Show(0, 'test2')"
+            @click="Filter(0, 'test2')"
           >
             <el-icon color="white"><aim /></el-icon>
           </el-button>
@@ -108,14 +116,14 @@ function Show(filter_index, condition) {
           <el-button
             color="rgb(72, 124, 198)"
             type="primary"
-            @click="Show(1, '')"
+            @click="Filter(1, '')"
           >
             <el-icon color="white"><aim /></el-icon>
           </el-button>
           <el-button
             color="rgb(72, 124, 198)"
             type="primary"
-            @click="Show(1, 'd3')"
+            @click="Filter(1, 'd3')"
           >
             <el-icon color="white"><aim /></el-icon>
           </el-button>
@@ -147,9 +155,16 @@ function Show(filter_index, condition) {
     <div class="content">
       <div class="gallery">
         <div v-for="c in show_cards" :key="c.id">
-          <card-view :content="c"></card-view>
+          <card-view @clickCard="ShowDetailWindow" :content="c"></card-view>
         </div>
       </div>
+    </div>
+
+    <div v-if="data.show_detail">
+      <detail-view
+        @close="data.show_detail = false"
+        :content="data.current_content"
+      ></detail-view>
     </div>
   </div>
 </template>
