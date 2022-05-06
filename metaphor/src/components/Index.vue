@@ -9,6 +9,11 @@ const data = reactive({
   content: [],
   filters: ["", "", ""],
   show_detail: false,
+  detail_window: {
+    x: 0,
+    y: 0,
+  },
+
   current_content: null,
 });
 
@@ -73,7 +78,19 @@ function Filter(filter_index, condition) {
   data.filters[filter_index] = condition;
 }
 
-function ShowDetailWindow(content) {
+const detailView = ref(null);
+function ShowDetailWindow(content, card_rect) {
+  data.detail_window.x = card_rect.x - card_rect.width * 2;
+  data.detail_window.y = card_rect.y + card_rect.height/2;
+
+  let w = window.innerWidth;
+  if (data.detail_window.x <= 0) {
+    data.detail_window.x = 0;
+  }
+  if (data.detail_window.x + 1000 >= w) {
+    data.detail_window.x = w - 1000;
+  }
+
   data.show_detail = true;
   data.current_content = content;
 }
@@ -160,8 +177,16 @@ function ShowDetailWindow(content) {
       </div>
     </div>
 
-    <div v-if="data.show_detail">
+    <div
+      class="detail-window"
+      v-if="data.show_detail"
+      :style="{
+        top: `${data.detail_window.y}px`,
+        left: `${data.detail_window.x}px`,
+      }"
+    >
       <detail-view
+        ref="detailView"
         @close="data.show_detail = false"
         :content="data.current_content"
       ></detail-view>
@@ -219,5 +244,10 @@ function ShowDetailWindow(content) {
       flex-wrap: wrap;
     }
   }
+}
+
+.detail-window {
+  position: absolute;
+  z-index: 10;
 }
 </style>

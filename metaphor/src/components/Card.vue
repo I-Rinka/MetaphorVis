@@ -1,4 +1,5 @@
 <script setup>
+import { ref } from "@vue/reactivity";
 import { Content } from "../data/content";
 const props = defineProps({
   content: {
@@ -7,8 +8,10 @@ const props = defineProps({
 });
 const emits = defineEmits(["clickCard"]);
 
+const card = ref(null);
+
 function ClickCard() {
-  emits("clickCard", props.content);
+  emits("clickCard", props.content, card.value.getBoundingClientRect());
 }
 </script>
 
@@ -30,7 +33,7 @@ function ClickCard() {
       ],
     }"
   >
-    <div class="card" @click="ClickCard">
+    <div ref="card" class="card" @click="ClickCard">
       <el-image class="preview-img" :src="props.content.picture" fit="cover" />
     </div>
   </el-tooltip>

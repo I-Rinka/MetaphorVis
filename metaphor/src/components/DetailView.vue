@@ -9,14 +9,18 @@
       @click="CloseWindow"
     />
     <div class="content">
-      <div class="groups">
-        <div v-for="g in content.group" :key="g">{{ g }}</div>
-      </div>
-      <el-image class="preview-img" :src="props.content.picture" fit="cover" />
-      <div class="text">
-        <div class="title">{{ props.content.title }}</div>
-        <div class="author">{{ props.content.innerContent.author }}</div>
-      </div>
+        <div class="groups">
+          <div v-for="g in content.group" :key="g">{{ g }}</div>
+        </div>
+        <el-image
+          class="preview-img"
+          :src="props.content.picture"
+          fit="cover"
+        />
+        <div class="text">
+          <div class="title">{{ props.content.title }}</div>
+          <div class="author">{{ props.content.innerContent.author }}</div>
+        </div>
     </div>
   </div>
 </template>
@@ -41,9 +45,6 @@ function CloseWindow() {
 <style lang="less" scoped>
 .detail {
   display: inline-block;
-  position: fixed;
-  top: 200px;
-  left: 200px;
   width: 1000px;
   height: 300px;
   background-color: rgb(238, 245, 254);
