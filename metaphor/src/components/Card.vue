@@ -5,12 +5,37 @@ const props = defineProps({
     type: Content,
   },
 });
+const emits = defineEmits(["clickCard"]);
+
+function ClickCard() {
+  emits("clickCard", props.content.innerContent);
+}
 </script>
+
 <template>
-  <div class="card">
-    <el-image class="preview-img" :src="props.content.picture" fit="cover" />
-  </div>
+  <el-tooltip
+    :content="content.title"
+    placement="top"
+    effect="light"
+    :offset="10"
+    :show-after="200"
+    :popper-options="{
+      modifiers: [
+        {
+          name: 'offset',
+          options: {
+            offset: [0, 15],
+          },
+        },
+      ],
+    }"
+  >
+    <div class="card" @click="ClickCard">
+      <el-image class="preview-img" :src="props.content.picture" fit="cover" />
+    </div>
+  </el-tooltip>
 </template>
+
 <style lang="less" scoped>
 .card {
   margin: 15px;

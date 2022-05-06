@@ -11,5 +11,6 @@ import Index from "./components/Index.vue";
 <style>
 body {
   margin: 0;
+  color: rgb(48, 49, 51);
 }
 </style>
